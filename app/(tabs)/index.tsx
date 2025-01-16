@@ -1,74 +1,226 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Button, StyleSheet, TouchableOpacity } from 'react-native';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+export default function App() {
+  const [input, setInput] = useState('');
+  const [output, setOutput] = useState('');
 
-export default function HomeScreen() {
+  const handlePress = (value: string) => {
+    setInput(input + value);
+  };
+
+  const handleEquals = () => {
+    try {
+      setOutput(eval(input));
+    } catch (error) {
+      setOutput('Error');
+    }
+  };
+
+  const handleClear = () => {
+    setInput('');
+    setOutput('');
+  };
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12'
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <View style={styles.container}>
+      <View style={styles.display}>
+        <Text style={styles.input}>{input}</Text>
+        <Text style={styles.output}>{output}</Text>
+      </View>
+      <View style={styles.buttons}>
+        <View style={styles.row}>
+          <TouchableOpacity style={styles.button} onPress={() => handlePress('1')}>
+            <Text style={styles.buttonText}>1</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={() => handlePress('2')}>
+            <Text style={styles.buttonText}>2</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={() => handlePress('3')}>
+            <Text style={styles.buttonText}>3</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.button,{backgroundColor: '#b3e6b3'} ]} onPress={() => handlePress('+')}>
+            <Text style={styles.buttonText}>+</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.row}>
+          <TouchableOpacity style={styles.button} onPress={() => handlePress('4')}>
+            <Text style={styles.buttonText}>4</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={() => handlePress('5')}>
+            <Text style={styles.buttonText}>5</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={() => handlePress('6')}>
+            <Text style={styles.buttonText}>6</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.button,{backgroundColor: '#b3e6b3'} ]} onPress={() => handlePress('-')}>
+            <Text style={styles.buttonText}>-</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.row}>
+          <TouchableOpacity style={styles.button} onPress={() => handlePress('7')}>
+            <Text style={styles.buttonText}>7</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={() => handlePress('8')}>
+            <Text style={styles.buttonText}>8</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={() => handlePress('9')}>
+            <Text style={styles.buttonText}>9</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.button,{backgroundColor: '#b3e6b3'} ]} onPress={() => handlePress('*')}>
+            <Text style={styles.buttonText}>*</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.row}>
+          <TouchableOpacity style={[styles.button,{backgroundColor: '#b3e6b3'} ]} onPress={handleClear}>
+            <Text style={styles.buttonText}>C</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={() => handlePress('0')}>
+            <Text style={styles.buttonText}>0</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.button, styles.equalsButton]} onPress={handleEquals}>
+            <Text style={styles.buttonText}> = </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.button,{backgroundColor: '#b3e6b3'} ]} onPress={() => handlePress('/')}>
+            <Text style={styles.buttonText}>/</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+      <Text style={styles.footer}>Calc by Rohan Sangle</Text>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
+  container: {
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
-    gap: 8,
+    backgroundColor: '#f0f0f0',
+    paddingHorizontal: 15,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  display: {
+    alignItems: 'flex-end',
+    marginBottom: 20,
+    width: '100%',
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
+  input: {
+    fontSize: 28,
+    color: '#000',
+    marginBottom: 5,
+  },
+  output: {
+    fontSize: 40,
+    color: '#000',
+  },
+  buttons: {
+    width: '95%',
+    marginTop: 20,
+    height: '40%'
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    // gap: 10,
+    marginBottom: 20,
+  },
+  button: {
+    backgroundColor: '#ccc',
+    borderRadius: 99,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '22%',
+    height: 70,
+  },
+  buttonText: {
+    fontSize: 22,
+    // fontWeight: 'bold',
+    color: '#000',
+  },
+  equalsButton: {
+    // backgroundColor: 'green',
+    backgroundColor: '#b3e6b3',
+  },
+  footer: {
     position: 'absolute',
+    bottom: 20,
+    color: '#000',
+    fontSize: 18,
   },
 });
+
+// import { Image, StyleSheet, Platform } from 'react-native';
+
+// import { HelloWave } from '@/components/HelloWave';
+// import ParallaxScrollView from '@/components/ParallaxScrollView';
+// import { ThemedText } from '@/components/ThemedText';
+// import { ThemedView } from '@/components/ThemedView';
+
+// export default function HomeScreen() {
+//   return (
+//     <ParallaxScrollView
+//       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
+//       headerImage={
+//         <Image
+//           source={require('@/assets/images/partial-react-logo.png')}
+//           style={styles.reactLogo}
+//         />
+//       }>
+//       <ThemedView style={styles.titleContainer}>
+//         <ThemedText type="title">Welcome!</ThemedText>
+//         <HelloWave />
+//       </ThemedView>
+//       <ThemedView style={styles.stepContainer}>
+//         <ThemedText type="subtitle">Step 1: Try it</ThemedText>
+//         <ThemedText>
+//           Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
+//           Press{' '}
+//           <ThemedText type="defaultSemiBold">
+//             {Platform.select({
+//               ios: 'cmd + d',
+//               android: 'cmd + m',
+//               web: 'F12'
+//             })}
+//           </ThemedText>{' '}
+//           to open developer tools.
+//         </ThemedText>
+//       </ThemedView>
+//       <ThemedView style={styles.stepContainer}>
+//         <ThemedText type="subtitle">Step 2: Explore</ThemedText>
+//         <ThemedText>
+//           Tap the Explore tab to learn more about what's included in this starter app.
+//         </ThemedText>
+//       </ThemedView>
+//       <ThemedView style={styles.stepContainer}>
+//         <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
+//         <ThemedText>
+//           When you're ready, run{' '}
+//           <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
+//           <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
+//           <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
+//           <ThemedText type="defaultSemiBold">app-example</ThemedText>.
+//         </ThemedText>
+//       </ThemedView>
+//     </ParallaxScrollView>
+//   );
+// }
+
+// const styles = StyleSheet.create({
+//   titleContainer: {
+//     flexDirection: 'row',
+//     alignItems: 'center',
+//     gap: 8,
+//   },
+//   stepContainer: {
+//     gap: 8,
+//     marginBottom: 8,
+//   },
+//   reactLogo: {
+//     height: 178,
+//     width: 290,
+//     bottom: 0,
+//     left: 0,
+//     position: 'absolute',
+//   },
+// });
+
